@@ -31,12 +31,13 @@ class Tweet extends Model {
     public function getAll() {
         $query = "
         select 
-            t.id, t.id_usuario, t.tweet, t.data 
+            t.id, t.id_usuario, t.tweet, t.data, u.nome 
         from 
             tweets as t
             left join usuarios as u on (t.id_usuario = u.id)
         where 
             id_usuario = :id_usuario
+            or t.id_usuario in (select id_usuarios_seguindo from usuarios_seguidores where id_usuario = :id_usuario)
         order by
             t.data desc
         ";
